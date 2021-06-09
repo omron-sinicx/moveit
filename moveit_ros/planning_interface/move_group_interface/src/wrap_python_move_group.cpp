@@ -152,6 +152,11 @@ public:
     return { res, plan.trajectory_, plan.planning_time_ };
   }
 
+  bool waitForMotionResultPython()
+  {
+    return waitForMotionResult() == MoveItErrorCode::SUCCESS;
+  }
+
   moveit_msgs::MotionPlanRequest constructMotionPlanRequestPython()
   {
     moveit_msgs::MotionPlanRequest request;
@@ -280,6 +285,9 @@ PYBIND11_MODULE(pymoveit_move_group_interface, m)
       .def("async_execute",
            py::overload_cast<const moveit_msgs::RobotTrajectory&>(&MoveGroupInterfaceWrapper::asyncExecute),
            py::arg("trajectory"))
+  move_group_interface_class.def("wait_for_motion_result", &MoveGroupInterfaceWrapper::waitForMotionResultPython);
+  moveit::core::MoveItErrorCode (MoveGroupInterfaceWrapper::*pick_1)(const std::string&, bool) =
+      &MoveGroupInterfaceWrapper::pick;
 
       .def("pick",
            py::overload_cast<const std::string&, std::vector<moveit_msgs::Grasp>, bool>(
