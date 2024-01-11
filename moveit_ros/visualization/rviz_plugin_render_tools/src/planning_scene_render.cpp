@@ -46,7 +46,7 @@ namespace moveit_rviz_plugin
 {
 PlanningSceneRender::PlanningSceneRender(Ogre::SceneNode* node, rviz::DisplayContext* context,
                                          const RobotStateVisualizationPtr& robot)
-  : planning_scene_visual_geometry_node_(node->createChildSceneNode())
+  : planning_scene_geometry_node_(node->createChildSceneNode())
   , planning_scene_collision_geometry_node_(node->createChildSceneNode())
   , context_(context)
   , scene_robot_(robot)
@@ -56,7 +56,7 @@ PlanningSceneRender::PlanningSceneRender(Ogre::SceneNode* node, rviz::DisplayCon
 
 PlanningSceneRender::~PlanningSceneRender()
 {
-  context_->getSceneManager()->destroySceneNode(planning_scene_visual_geometry_node_);
+  context_->getSceneManager()->destroySceneNode(planning_scene_geometry_node_);
   context_->getSceneManager()->destroySceneNode(planning_scene_collision_geometry_node_);
 }
 
@@ -78,7 +78,7 @@ void PlanningSceneRender::clear()
 void PlanningSceneRender::setVisualVisible(const bool& visible)
 {
   visual_visible_ = visible;
-  planning_scene_visual_geometry_node_->setVisible(visual_visible_);
+  planning_scene_geometry_node_->setVisible(visual_visible_);
 }
 
 void PlanningSceneRender::setCollisionVisible(const bool& visible)
@@ -139,7 +139,7 @@ void PlanningSceneRender::renderPlanningScene(const planning_scene::PlanningScen
       const auto& mesh = shapes::createMeshFromResource(object->visual_geometry_mesh_url_,
                                                         Eigen::Vector3d(mesh_scaling_factor_, mesh_scaling_factor_,
                                                                         mesh_scaling_factor_));
-      render_shapes_->renderShape(planning_scene_visual_geometry_node_, mesh,
+      render_shapes_->renderShape(planning_scene_geometry_node_, mesh,
                                   object->pose_ * object->visual_geometry_pose_, octree_voxel_rendering,
                                   octree_color_mode, color, alpha);
     }
@@ -147,7 +147,7 @@ void PlanningSceneRender::renderPlanningScene(const planning_scene::PlanningScen
     {
       for (std::size_t j = 0; j < object->shapes_.size(); ++j)
       {
-        render_shapes_->renderShape(planning_scene_visual_geometry_node_, object->shapes_[j].get(),
+        render_shapes_->renderShape(planning_scene_geometry_node_, object->shapes_[j].get(),
                                     scene->getWorld()->getGlobalShapeTransform(id, j), octree_voxel_rendering,
                                     octree_color_mode, color, alpha);
       }

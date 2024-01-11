@@ -66,9 +66,9 @@ public:
                       const RobotStateVisualizationPtr& robot);
   ~PlanningSceneRender();
 
-  Ogre::SceneNode* getVisualGeometryNode()
+  Ogre::SceneNode* getGeometryNode()
   {
-    return planning_scene_visual_geometry_node_;
+    return planning_scene_geometry_node_;
   }
 
   Ogre::SceneNode* getCollisionGeometryNode()
@@ -103,7 +103,7 @@ public:
   void clear();
 
 private:
-  Ogre::SceneNode* planning_scene_visual_geometry_node_;     // Displays the visual geometry of collision objects
+  Ogre::SceneNode* planning_scene_geometry_node_;     // Displays the visual geometry of collision objects
   Ogre::SceneNode* planning_scene_collision_geometry_node_;  // Displays the collision geometry of collision objects
   rviz::DisplayContext* context_;
   RenderShapesPtr render_shapes_;

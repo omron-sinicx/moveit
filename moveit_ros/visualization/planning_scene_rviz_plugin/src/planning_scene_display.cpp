@@ -381,7 +381,7 @@ void PlanningSceneDisplay::renderPlanningScene()
   {
     ROS_ERROR("Caught %s while rendering planning scene", ex.what());
   }
-  planning_scene_render_->getVisualGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
+  planning_scene_render_->getGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
   planning_scene_render_->getCollisionGeometryNode()->setVisible(scene_geometry_collision_enabled_property_->getBool());
 }
 
@@ -467,7 +467,7 @@ void PlanningSceneDisplay::changedSceneGeometryVisualEnabled()
   if (planning_scene_render_)
   {
     // TODO (felixvd): setVisualVisible only seems to do the same thing again? Why does this split exist?
-    planning_scene_render_->getVisualGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
+    planning_scene_render_->getGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
     planning_scene_render_->setVisualVisible(scene_geometry_visual_enabled_property_->getBool());
   }
 }
@@ -605,7 +605,7 @@ void PlanningSceneDisplay::onRobotModelLoaded()
 {
   changedPlanningSceneTopic();
   planning_scene_render_ = std::make_shared<PlanningSceneRender>(planning_scene_node_, context_, planning_scene_robot_);
-  planning_scene_render_->getVisualGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
+  planning_scene_render_->getGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
   planning_scene_render_->getCollisionGeometryNode()->setVisible(scene_geometry_collision_enabled_property_->getBool());
   planning_scene_render_->setVisualVisible(scene_geometry_visual_enabled_property_->getBool());
   planning_scene_render_->setCollisionVisible(scene_geometry_collision_enabled_property_->getBool());
@@ -667,7 +667,7 @@ void PlanningSceneDisplay::onEnable()
   }
   if (planning_scene_render_)
   {
-    planning_scene_render_->getVisualGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
+    planning_scene_render_->getGeometryNode()->setVisible(scene_geometry_visual_enabled_property_->getBool());
     planning_scene_render_->getCollisionGeometryNode()->setVisible(
         scene_geometry_collision_enabled_property_->getBool());
     planning_scene_render_->setVisualVisible(scene_geometry_visual_enabled_property_->getBool());
@@ -688,7 +688,7 @@ void PlanningSceneDisplay::onDisable()
     planning_scene_monitor_->stopSceneMonitor();
     if (planning_scene_render_)
     {
-      planning_scene_render_->getVisualGeometryNode()->setVisible(false);
+      planning_scene_render_->getGeometryNode()->setVisible(false);
       planning_scene_render_->getCollisionGeometryNode()->setVisible(false);
     }
   }
