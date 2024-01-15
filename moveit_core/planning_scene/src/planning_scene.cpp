@@ -1882,7 +1882,7 @@ bool PlanningScene::processCollisionObjectAdd(const moveit_msgs::CollisionObject
   }
   world_->setSubframesOfObject(object.id, subframes);
 
-  ROS_WARN_STREAM_NAMED(LOGNAME, "Got object with url " << object.visual_geometry_mesh_url);
+  ROS_DEBUG_STREAM_NAMED(LOGNAME, "Got object with url " << object.visual_geometry_mesh_url);
   if (!object.visual_geometry_mesh_url.empty())
   {
     ROS_WARN_NAMED(LOGNAME, "DEBUG 1");
