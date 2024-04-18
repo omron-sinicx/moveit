@@ -65,6 +65,7 @@ find_package(catkin REQUIRED
 COMPONENTS
   # pybind needs to be found earlier in Ubuntu 22.04 and similar https://github.com/pybind/pybind11/issues/3996
   pybind11_catkin
+  py_binding_tools
   tf2_eigen
   tf2_geometry_msgs
   eigen_stl_containers
@@ -122,7 +123,6 @@ set(THIS_PACKAGE_INCLUDE_DIRS
     planning_request_adapter/include
     planning_scene/include
     profiler/include
-    python/tools/include
     sensor_manager/include
     trajectory_processing/include
     utils/include
@@ -148,7 +148,6 @@ catkin_package(
     moveit_constraint_samplers
     moveit_planning_request_adapter
     moveit_profiler
-    moveit_python_bindings_tools
     moveit_trajectory_processing
     moveit_distance_field
     moveit_collision_distance_field
@@ -231,7 +230,6 @@ add_subdirectory(collision_distance_field)
 add_subdirectory(kinematics_metrics)
 add_subdirectory(dynamics_solver)
 
-add_subdirectory(python)
 set(pymoveit_libs
   moveit_collision_detection
   moveit_kinematic_constraints
@@ -251,7 +249,7 @@ pybind_add_module(pymoveit_core
     kinematic_constraints/src/pykinematic_constraint.cpp
 )
 target_include_directories(pymoveit_core SYSTEM PRIVATE ${catkin_INCLUDE_DIRS})
-target_link_libraries(pymoveit_core PRIVATE ${pymoveit_libs} moveit_python_bindings_tools ${catkin_LIBRARIES})
+target_link_libraries(pymoveit_core PRIVATE ${pymoveit_libs} ${catkin_LIBRARIES})
 
 #catkin_lint: ignore_once undefined_target (pymoveit_core is defined by pybind_add_module)
 install(TARGETS pymoveit_core LIBRARY DESTINATION ${CATKIN_GLOBAL_PYTHON_DESTINATION})
