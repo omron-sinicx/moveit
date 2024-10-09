@@ -483,7 +483,6 @@ bool PlanningSceneInterface::clear()
   return impl_->clear();
 }
 
-
 bool PlanningSceneInterface::allowCollisions(const std::string& link_name_1, const std::string& link_name_2)
 {
   std::vector<std::string> link_group_1, link_group_2;
