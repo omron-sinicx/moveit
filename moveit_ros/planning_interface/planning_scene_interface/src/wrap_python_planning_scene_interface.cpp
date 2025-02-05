@@ -86,10 +86,10 @@ PYBIND11_MODULE(pymoveit_planning_scene_interface, m)
            py::arg("object_ids") = std::vector<std::string>{})
       .def("apply_planning_scene", &PlanningSceneInterface::applyPlanningScene, py::arg("planning_scene"))
       .def("clear", &PlanningSceneInterfaceWrapper::clear)
-      .def("allow_collisions_python",
+      .def("allow_collisions",
            py::overload_cast<const std::string&, const std::string&>(&PlanningSceneInterface::allowCollisions),
            py::arg("link_1"), py::arg("link_2"))
-      .def("allow_collisions_python",
+      .def("allow_collisions",
            py::overload_cast<const std::vector<std::string>&, const std::string&>(
                &PlanningSceneInterface::allowCollisions),
            py::arg("link_1"), py::arg("link_2"))
