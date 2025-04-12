@@ -960,7 +960,7 @@ public:
     }
   }
 
-  double computeCartesianPath(const std::vector<geometry_msgs::Pose>& waypoints, double step, double jump_threshold,
+  double computeCartesianPath(const std::vector<geometry_msgs::Pose>& waypoints, double step,
                               moveit_msgs::RobotTrajectory& msg, const moveit_msgs::Constraints& path_constraints,
                               bool avoid_collisions, moveit_msgs::MoveItErrorCodes& error_code)
   {

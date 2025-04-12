@@ -36,11 +36,12 @@ import rospy
 from rosgraph.names import ns_join
 
 from moveit_msgs.msg import PlanningScene, CollisionObject, AttachedCollisionObject
+from moveit_msgs.msg import AllowedCollisionMatrix, AllowedCollisionEntry
 from moveit.planning_interface import PlanningSceneInterface as _PlanningSceneInterface
 from geometry_msgs.msg import Point
 from shape_msgs.msg import SolidPrimitive, Plane, Mesh, MeshTriangle
 from .exception import MoveItCommanderException
-from moveit_msgs.srv import ApplyPlanningScene, ApplyPlanningSceneRequest
+import moveit_commander.conversions as conversions
 
 try:
     from pyassimp import pyassimp
@@ -51,7 +52,7 @@ except:
     except:
         pyassimp = False
         print(
-            "Failed to import pyassimp, see https://github.com/moveit/moveit/issues/86 for more info"
+            "Failed to import pyassimp, see https://github.com/ros-planning/moveit/issues/86 for more info"
         )
 
 
@@ -63,8 +64,9 @@ class PlanningSceneInterface():
     See wrap_python_planning_scene_interface.cpp for the wrapped methods.
     """
 
-    def __init__(self, ns="", synchronous=False, service_timeout=5.0):
+    def __init__(self, ns="", synchronous=True):
         self._psi = _PlanningSceneInterface(ns)
+        self.__synchronous = synchronous
 
         if not self.__synchronous:
             self._pub_co = rospy.Publisher(
@@ -85,7 +87,7 @@ class PlanningSceneInterface():
                 scene.robot_state.attached_collision_objects = [collision_object]
             else:
                 scene.world.collision_objects = [collision_object]
-            self._psi.apply_planning_scene(conversions.msg_to_string(scene))
+            self._psi.apply_planning_scene(scene)
         else:
             if attach:
                 self._pub_aco.publish(collision_object)
@@ -262,9 +264,7 @@ class PlanningSceneInterface():
 
     def get_planning_scene(self, components):
         """Get move_group's current planning scene"""
-        msg = PlanningScene()
-        conversions.msg_from_string(msg, self._psi.get_planning_scene(components))
-        return msg
+        return self._psi.get_planning_scene(components)
 
     def apply_collision_object(self, collision_object_message):
         """

@@ -43,8 +43,8 @@ from moveit_msgs.msg import (
     MoveItErrorCodes,
     TrajectoryConstraints,
 )
+from moveit_msgs.msg._RobotTrajectory import RobotTrajectory
 from sensor_msgs.msg import JointState
-import rospy
 import tf
 from moveit.planning_interface import MoveGroupInterface
 
@@ -160,7 +160,7 @@ class MoveGroupCommander(object):
         >>> from sensor_msgs.msg import JointState
         >>> joint_state = JointState()
         >>> joint_state.header = Header()
-        >>> joint_state.header.stamp = rospy.Time.now()
+        >>> joint_state.header.stamp.Time.now()
         >>> joint_state.name = ['joint_a', 'joint_b']
         >>> joint_state.position = [0.17, 0.34]
         >>> moveit_robot_state = RobotState()
@@ -650,15 +650,15 @@ class MoveGroupCommander(object):
                 avoid_collisions,
             )
 
-    def execute(self, plan_msg, wait=True):
+    def execute(self, trajectory, wait=True):
         """Execute a previously planned path"""
         if not hasattr(trajectory, "joint_trajectory"):
             trajectory = RobotTrajectory(joint_trajectory=trajectory)
 
         if wait:
-            return self._g.execute(plan_msg)
+            return self._g.execute(trajectory)
         else:
-            return self._g.async_execute(plan_msg)
+            return self._g.async_execute(trajectory)
 
     def wait_for_motion_result(self):
         """Execute a previously planned path"""
