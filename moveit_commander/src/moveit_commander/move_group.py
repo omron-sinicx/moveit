@@ -62,6 +62,7 @@ class MoveGroupCommander(object):
     ):
         """ Specify the group name for which to construct this commander instance. Throws an exception if there is an initialization error. """
         self._g = MoveGroupInterface(name, robot_description, ns, wait_for_servers)
+        self._g.start_state_monitor(1.0)  # Avoid issue of wrong current state
 
     def get_name(self):
         """Get the name of the group this instance was initialized for"""
